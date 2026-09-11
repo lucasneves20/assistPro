@@ -30,4 +30,18 @@
     <string name="atualizacao_erro_download">Falha ao baixar a atualização.</string>
     <string name="atualizacao_instalar">Atualizar</string>
     <string name="atualizacao_depois">Depois</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="modo_desenvolvedor">Modo desenvolvedor</string>
+    <string name="modo_dev_desc">Mostra um botão no topo de todas as telas que salva um checkpoint (estado do app, do sistema, erros e logs) numa tabela própria do banco.</string>
+    <string name="modo_dev_ativado">Modo desenvolvedor ativado</string>
+    <string name="modo_dev_desativado">Modo desenvolvedor desativado</string>
+    <string name="capturar_checkpoint">Salvar checkpoint</string>
+    <string name="checkpoint_salvando">Salvando checkpoint…</string>
+    <string name="checkpoint_salvo">Checkpoint salvo em %1$s</string>
+    <string name="checkpoint_salvo_banco">Checkpoint salvo no banco</string>
+    <string name="exportar_checkpoints">Exportar checkpoints</string>
+    <string name="exportado_para">Exportado para %1$s</string>
+    <string name="exportar_falhou">Falha ao exportar</string>
+    <string name="limpar_checkpoints">Limpar checkpoints</string>
+    <string name="checkpoints_removidos">%1$d checkpoints removidos</string>
 </resources>

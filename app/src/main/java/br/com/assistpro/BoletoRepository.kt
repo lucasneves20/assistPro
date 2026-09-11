@@ -10,8 +10,21 @@ class BoletoDb(context: Context) :
     SQLiteOpenHelper(context.applicationContext, NOME, null, VERSAO) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        db.execSQL(
-            """
+        db.execSQL(SQL_BOLETOS)
+        db.execSQL(SQL_CHECKPOINTS)
+    }
+
+    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
+        if (oldVersion < 2) db.execSQL(SQL_CHECKPOINTS)
+    }
+
+    companion object {
+        const val NOME = "assistpro.db"
+        const val VERSAO = 2
+        const val TABELA = "boletos"
+        const val TABELA_CHECKPOINTS = "checkpoints"
+
+        val SQL_BOLETOS = """
             CREATE TABLE $TABELA (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 linha TEXT NOT NULL DEFAULT '',
@@ -22,16 +35,21 @@ class BoletoDb(context: Context) :
                 pago INTEGER NOT NULL DEFAULT 0,
                 criado_em INTEGER NOT NULL DEFAULT 0
             )
-            """.trimIndent()
-        )
-    }
+        """.trimIndent()
 
-    override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
-
-    companion object {
-        const val NOME = "assistpro.db"
-        const val VERSAO = 1
-        const val TABELA = "boletos"
+        val SQL_CHECKPOINTS = """
+            CREATE TABLE IF NOT EXISTS $TABELA_CHECKPOINTS (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                tela TEXT NOT NULL DEFAULT '',
+                criado_em INTEGER NOT NULL DEFAULT 0,
+                versao_app TEXT NOT NULL DEFAULT '',
+                tem_erro INTEGER NOT NULL DEFAULT 0,
+                ultimo_erro TEXT,
+                app TEXT NOT NULL DEFAULT '',
+                sistema TEXT NOT NULL DEFAULT '',
+                logs TEXT NOT NULL DEFAULT ''
+            )
+        """.trimIndent()
     }
 }
 

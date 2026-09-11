@@ -27,13 +27,23 @@
             android:src="@drawable/ic_up" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_weight="1"
             android:text="@string/arquivos"
             android:textColor="@color/dracula_purple"
             android:textSize="22sp"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/btn_dev"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/capturar_checkpoint"
+            android:src="@drawable/ic_bug"
+            android:visibility="gone" />
     </LinearLayout>
 
     <TextView

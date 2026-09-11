@@ -91,8 +91,18 @@ class AddBoletoActivity : AppCompatActivity() {
         campoVencimento.setOnClickListener { escolherData() }
         campoVencimento.isFocusable = false
 
+        ModoDev.aplicar(this, findViewById(R.id.btn_dev), rotuloTela())
+
         if (boletoId <= 0) carregador.finalizar()
     }
+
+    override fun onResume() {
+        super.onResume()
+        ModoDev.aplicar(this, findViewById(R.id.btn_dev), rotuloTela())
+    }
+
+    private fun rotuloTela(): String =
+        if (boletoId > 0) "Editar boleto" else "Adicionar boleto"
 
     private fun tirarFoto() {
         val dir = File(cacheDir, "capturas")

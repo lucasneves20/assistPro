@@ -61,15 +61,21 @@ class MainActivity : AppCompatActivity() {
             addLauncher.launch(Intent(this, AddBoletoActivity::class.java))
         }
 
+        findViewById<ImageButton>(R.id.btn_config).setOnClickListener {
+            startActivity(Intent(this, ConfiguracoesActivity::class.java))
+        }
+
         findViewById<ImageButton>(R.id.btn_atualizar).setOnClickListener {
             verificarAtualizacao(manual = true)
         }
+        ModoDev.aplicar(this, findViewById(R.id.btn_dev), "Principal")
         verificarAtualizacao(manual = false)
     }
 
     override fun onResume() {
         super.onResume()
         recarregar()
+        ModoDev.aplicar(this, findViewById(R.id.btn_dev), "Principal")
         if (apkPendente != null) instalarPendente()
     }
 

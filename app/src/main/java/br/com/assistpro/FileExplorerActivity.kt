@@ -46,11 +46,14 @@ class FileExplorerActivity : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.btn_up).setOnClickListener { subir() }
 
+        ModoDev.aplicar(this, findViewById(R.id.btn_dev), "Arquivos")
+
         if (temPermissao()) listar(atual) else pedirPermissao()
     }
 
     override fun onResume() {
         super.onResume()
+        ModoDev.aplicar(this, findViewById(R.id.btn_dev), "Arquivos")
         if (temPermissao()) listar(atual)
     }
 

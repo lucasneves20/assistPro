@@ -53,4 +53,18 @@
     <string name="relatorios">Relatórios</string>
     <string name="relatorio_vazio">Nenhum boleto neste período</string>
     <string name="aguardando_boleto">Aguardando boleto…</string>
+    <string name="ganho_add">Adicionar ganho</string>
+    <string name="ganho_titulo">Novo ganho</string>
+    <string name="ganho_descricao">Descrição (ex.: Salário, Freela)</string>
+    <string name="ganho_sem_descricao">Ganho</string>
+    <string name="ganho_data_em">Lançado em %1$s</string>
+    <string name="ganho_valor_invalido">Informe um valor válido</string>
+    <string name="escolher_data">Escolha a data</string>
+    <string name="filtrar_periodo">Filtrar período</string>
+    <string name="todo_o_mes">Todo o mês</string>
+    <string name="dashboard_periodo">%1$s</string>
+    <string name="dashboard_ganhos">Ganhos: %1$s</string>
+    <string name="dashboard_perdas">Perdas: %1$s</string>
+    <string name="dashboard_saldo">Saldo: %1$s</string>
+    <string name="dashboard_aberto">Em aberto: %1$s</string>
 </resources>

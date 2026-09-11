@@ -12,6 +12,7 @@ class BoletoDb(context: Context) :
     override fun onCreate(db: SQLiteDatabase) {
         db.execSQL(SQL_BOLETOS)
         db.execSQL(SQL_CHECKPOINTS)
+        db.execSQL(SQL_GANHOS)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
@@ -25,13 +26,15 @@ class BoletoDb(context: Context) :
                 "ALTER TABLE $TABELA_CHECKPOINTS ADD COLUMN tipo TEXT NOT NULL DEFAULT ''"
             )
         }
+        if (oldVersion < 4) db.execSQL(SQL_GANHOS)
     }
 
     companion object {
         const val NOME = "assistpro.db"
-        const val VERSAO = 3
+        const val VERSAO = 4
         const val TABELA = "boletos"
         const val TABELA_CHECKPOINTS = "checkpoints"
+        const val TABELA_GANHOS = "ganhos"
 
         val SQL_BOLETOS = """
             CREATE TABLE $TABELA (
@@ -59,6 +62,16 @@ class BoletoDb(context: Context) :
                 logs TEXT NOT NULL DEFAULT '',
                 observacao TEXT NOT NULL DEFAULT '',
                 tipo TEXT NOT NULL DEFAULT ''
+            )
+        """.trimIndent()
+
+        val SQL_GANHOS = """
+            CREATE TABLE IF NOT EXISTS $TABELA_GANHOS (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                descricao TEXT NOT NULL DEFAULT '',
+                valor INTEGER NOT NULL DEFAULT 0,
+                data TEXT NOT NULL DEFAULT '',
+                criado_em INTEGER NOT NULL DEFAULT 0
             )
         """.trimIndent()
     }

@@ -27,16 +27,16 @@
         android:src="@drawable/ic_bug"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/titulo"
-        app:layout_constraintEnd_toStartOf="@id/btn_relatorio"
+        app:layout_constraintEnd_toStartOf="@id/btn_filtro"
         app:layout_constraintTop_toTopOf="@id/titulo" />
 
     <ImageButton
-        android:id="@+id/btn_relatorio"
+        android:id="@+id/btn_filtro"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="@string/relatorios"
-        android:src="@drawable/ic_relatorio"
+        android:contentDescription="@string/filtrar_periodo"
+        android:src="@drawable/ic_calendario"
         app:layout_constraintBottom_toBottomOf="@id/titulo"
         app:layout_constraintEnd_toStartOf="@id/btn_config"
         app:layout_constraintTop_toTopOf="@id/titulo" />
@@ -98,6 +98,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/resumo" />
 
+    <LinearLayout
+        android:id="@+id/dash"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divisor">
+
+        <TextView
+            android:id="@+id/dash_periodo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:textColor="@color/dracula_cyan"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dash_ganhos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/dracula_green"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/dash_perdas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dracula_red"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/dash_saldo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dracula_yellow"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dash_aberto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/dracula_orange"
+            android:textSize="13sp" />
+
+        <Button
+            android:id="@+id/btn_add_ganho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:minHeight="0dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="@string/ganho_add"
+            android:textSize="12sp" />
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/lista"
         android:layout_width="0dp"
@@ -108,7 +174,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divisor" />
+        app:layout_constraintTop_toBottomOf="@id/dash" />
 
     <TextView
         android:id="@+id/vazio"
@@ -124,7 +190,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divisor" />
+        app:layout_constraintTop_toBottomOf="@id/dash" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"

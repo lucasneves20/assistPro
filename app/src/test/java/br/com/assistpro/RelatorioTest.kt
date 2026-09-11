@@ -52,4 +52,27 @@ class RelatorioTest {
         assertEquals(0L, r.vencido)
         assertEquals(0L, r.emAberto)
     }
+
+    @Test
+    fun financeiroCalculaSaldoDoMes() {
+        val ganhos = listOf(
+            Ganho(data = "2025-06-01", valorCentavos = 10000),
+            Ganho(data = "2025-06-20", valorCentavos = 5000),
+            Ganho(data = "2025-05-01", valorCentavos = 999)
+        )
+        val f = Relatorio.financeiro(ganhos, boletos, 2025, 6)
+        assertEquals(15000L, f.ganhos)
+        assertEquals(6000L, f.perdas)
+        assertEquals(9000L, f.saldo)
+        assertEquals(2, f.qtdGanhos)
+    }
+
+    @Test
+    fun financeiroDoDiaFiltra() {
+        val ganhos = listOf(Ganho(data = "2025-06-05", valorCentavos = 8000))
+        val f = Relatorio.financeiroDoDia(ganhos, boletos, 2025, 6, 5)
+        assertEquals(8000L, f.ganhos)
+        assertEquals(3000L, f.perdas)
+        assertEquals(5000L, f.saldo)
+    }
 }

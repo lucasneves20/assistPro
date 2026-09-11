@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="8dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="8dp">
+
+    <EditText
+        android:id="@+id/ganho_descricao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_input"
+        android:hint="@string/ganho_descricao"
+        android:importantForAutofill="no"
+        android:inputType="textCapSentences"
+        android:padding="12dp"
+        android:textColor="@color/dracula_fg"
+        android:textColorHint="@color/dracula_comment"
+        android:textSize="14sp" />
+
+    <EditText
+        android:id="@+id/ganho_valor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/bg_input"
+        android:hint="@string/valor"
+        android:importantForAutofill="no"
+        android:inputType="numberDecimal"
+        android:padding="12dp"
+        android:textColor="@color/dracula_fg"
+        android:textColorHint="@color/dracula_comment"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/ganho_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/dracula_comment"
+        android:textSize="12sp" />
+
+</LinearLayout>

@@ -14,7 +14,8 @@ import java.util.Calendar
 
 /**
  * Calendario mensal proprio, desenhado com Views e com o tema do app.
- * Nao usa DatePicker do Android.
+ * Nao usa DatePicker do Android. Os dias da semana ficam na propria grade,
+ * garantindo que aparecam alinhados com os numeros.
  */
 class CalendarioMesView @JvmOverloads constructor(
     context: Context,
@@ -59,44 +60,50 @@ class CalendarioMesView @JvmOverloads constructor(
         atualizar()
     }
 
+    fun definirMes(ano: Int, mes: Int) {
+        this.ano = ano
+        this.mes = mes
+        atualizar()
+    }
+
     private fun montar() {
         val cabecalho = LinearLayout(context).apply {
             orientation = HORIZONTAL
             gravity = Gravity.CENTER_VERTICAL
         }
-        cabecalho.addView(botaoMes("<"), LinearLayout.LayoutParams(dp(40), dp(40)))
+        cabecalho.addView(botaoMes("<"), LinearLayout.LayoutParams(dp(44), dp(44)))
         titulo.apply {
             gravity = Gravity.CENTER
             setTextColor(cor(R.color.dracula_purple))
             textSize = 17f
             setTypeface(typeface, Typeface.BOLD)
         }
-        cabecalho.addView(
-            titulo,
-            LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f)
-        )
-        cabecalho.addView(botaoMes(">"), LinearLayout.LayoutParams(dp(40), dp(40)))
-        addView(cabecalho)
-
-        val semana = LinearLayout(context).apply { orientation = HORIZONTAL }
-        for (nome in diasSemana) {
-            semana.addView(diaSemana(nome), LinearLayout.LayoutParams(0, dp(28), 1f))
-        }
-        addView(semana)
+        cabecalho.addView(titulo, LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f))
+        cabecalho.addView(botaoMes(">"), LinearLayout.LayoutParams(dp(44), dp(44)))
+        addView(cabecalho, LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
 
         grade.columnCount = 7
-        grade.rowCount = 6
         addView(grade, LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
     }
 
     private fun atualizar() {
         titulo.text = Formato.mesTitulo(String.format("%04d-%02d", ano, mes))
         grade.removeAllViews()
+        for (nome in diasSemana) {
+            grade.addView(rotuloSemana(nome), parametrosCelula(dp(26)))
+        }
         for (linha in CalendarioMes.celulas(ano, mes)) {
             for (dia in linha) {
-                grade.addView(celula(dia), parametrosCelula())
+                grade.addView(celula(dia), parametrosCelula(dp(38)))
             }
         }
+    }
+
+    private fun rotuloSemana(nome: String): TextView = TextView(context).apply {
+        text = nome
+        gravity = Gravity.CENTER
+        textSize = 12f
+        setTextColor(cor(R.color.dracula_comment))
     }
 
     private fun celula(dia: Int): TextView {
@@ -105,9 +112,7 @@ class CalendarioMesView @JvmOverloads constructor(
             textSize = 15f
             text = if (dia == 0) "" else dia.toString()
         }
-        if (dia == 0) {
-            return tv
-        }
+        if (dia == 0) return tv
         when {
             dia == diaSelecionado -> {
                 tv.setTextColor(cor(R.color.dracula_bg))
@@ -118,29 +123,20 @@ class CalendarioMesView @JvmOverloads constructor(
                 tv.setTextColor(cor(R.color.dracula_purple))
                 tv.setTypeface(tv.typeface, Typeface.BOLD)
             }
-            else -> {
-                tv.setTextColor(cor(R.color.dracula_fg))
-            }
+            else -> tv.setTextColor(cor(R.color.dracula_fg))
         }
         tv.setOnClickListener { aoSelecionarDia?.invoke(dia) }
         return tv
     }
 
-    private fun parametrosCelula(): GridLayout.LayoutParams =
+    private fun parametrosCelula(altura: Int): GridLayout.LayoutParams =
         GridLayout.LayoutParams().apply {
             width = 0
-            height = dp(40)
+            height = altura
             columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
             setGravity(Gravity.CENTER)
             setMargins(dp(1), dp(1), dp(1), dp(1))
         }
-
-    private fun diaSemana(nome: String): TextView = TextView(context).apply {
-        text = nome
-        gravity = Gravity.CENTER
-        textSize = 12f
-        setTextColor(cor(R.color.dracula_comment))
-    }
 
     private fun botaoMes(simbolo: String): TextView = TextView(context).apply {
         text = simbolo
@@ -172,6 +168,5 @@ class CalendarioMesView @JvmOverloads constructor(
 
     private fun cor(id: Int): Int = ContextCompat.getColor(context, id)
 
-    private fun dp(valor: Int): Int =
-        (valor * resources.displayMetrics.density).toInt()
+    private fun dp(valor: Int): Int = (valor * resources.displayMetrics.density).toInt()
 }

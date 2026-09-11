@@ -1,6 +1,5 @@
 package br.com.assistpro
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -242,17 +241,14 @@ class AddBoletoActivity : AppCompatActivity() {
             val p = iso.split("-")
             cal.set(p[0].toInt(), p[1].toInt() - 1, p[2].toInt())
         }
-        DatePickerDialog(
+        DialogoCalendario.escolherData(
             this,
-            { _, ano, mes, dia ->
-                campoVencimento.setText(
-                    String.format(Locale.US, "%02d/%02d/%04d", dia, mes + 1, ano)
-                )
-            },
             cal.get(Calendar.YEAR),
-            cal.get(Calendar.MONTH),
-            cal.get(Calendar.DAY_OF_MONTH)
-        ).show()
+            cal.get(Calendar.MONTH) + 1,
+            if (iso != null) cal.get(Calendar.DAY_OF_MONTH) else null
+        ) { ano, mes, dia ->
+            campoVencimento.setText(String.format(Locale.US, "%02d/%02d/%04d", dia, mes, ano))
+        }
     }
 
     private fun salvar() {

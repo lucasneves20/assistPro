@@ -20,9 +20,12 @@ gradle :app:assembleRelease "-Passistpro.versionName=${VERSAO}"
 APK="app/build/outputs/apk/release/app-release.apk"
 [ -f "$APK" ] || { echo "APK nao encontrado: $APK"; exit 1; }
 
+ASSET="app/build/outputs/apk/release/assistPro-${VERSAO}.apk"
+cp "$APK" "$ASSET"
+
 echo "==> Publicando ${TAG}..."
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-gh release create "$TAG" "$APK" --title "assistPro ${VERSAO}" --notes "${NOTAS}" --target "$BRANCH"
+gh release create "$TAG" "$ASSET" --title "assistPro ${VERSAO}" --notes "${NOTAS}" --target "$BRANCH"
 
 REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner)"
 echo "==> Pronto: https://github.com/${REPO}/releases/tag/${TAG}"

@@ -34,7 +34,10 @@ class AddBoletoActivity : AppCompatActivity() {
     private lateinit var campoValor: EditText
     private lateinit var campoVencimento: EditText
     private lateinit var status: TextView
+    private lateinit var titulo: TextView
 
+    private var boletoId: Long = 0L
+    private var boletoAtual: Boleto? = null
     private var bitmap: Bitmap? = null
     private var fotoUri: Uri? = null
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
@@ -66,6 +69,13 @@ class AddBoletoActivity : AppCompatActivity() {
         campoValor = findViewById(R.id.campo_valor)
         campoVencimento = findViewById(R.id.campo_vencimento)
         status = findViewById(R.id.status)
+        titulo = findViewById(R.id.titulo_add)
+
+        boletoId = intent.getLongExtra(EXTRA_ID, 0L)
+        if (boletoId > 0) {
+            titulo.setText(R.string.editar)
+            carregarBoleto()
+        }
 
         findViewById<Button>(R.id.btn_foto).setOnClickListener { tirarFoto() }
         findViewById<Button>(R.id.btn_galeria).setOnClickListener { pickImage.launch("image/*") }
@@ -223,8 +233,8 @@ class AddBoletoActivity : AppCompatActivity() {
             return
         }
 
-        val imagem = salvarImagem()
-        val boleto = Boleto(
+        val imagem = salvarImagem() ?: boletoAtual?.imagem
+        val boleto = (boletoAtual ?: Boleto()).copy(
             linha = linha,
             valorCentavos = valor,
             vencimento = vencIso,
@@ -233,10 +243,32 @@ class AddBoletoActivity : AppCompatActivity() {
         )
 
         Thread {
-            val id = repo.inserir(boleto)
-            boleto.id = id
+            if (boletoId > 0) {
+                repo.atualizar(boleto)
+            } else {
+                boleto.id = repo.inserir(boleto)
+            }
             BoletoNotificacoes.agendar(this, boleto)
             runOnUiThread { finish() }
+        }.start()
+    }
+
+    private fun carregarBoleto() {
+        if (boletoId <= 0) return
+        Thread {
+            val b = repo.buscar(boletoId) ?: return@Thread
+            val bmp = b.imagem?.let { caminho ->
+                val arquivo = File(caminho)
+                if (arquivo.exists()) BitmapFactory.decodeFile(arquivo.absolutePath) else null
+            }
+            runOnUiThread {
+                boletoAtual = b
+                campoDescricao.setText(b.descricao)
+                campoLinha.setText(b.linha)
+                if (b.valorCentavos > 0) campoValor.setText(Formato.moeda(b.valorCentavos))
+                b.vencimento?.let { campoVencimento.setText(Formato.dataBrDeIso(it)) }
+                if (bmp != null) preview.setImageBitmap(bmp)
+            }
         }.start()
     }
 
@@ -256,5 +288,9 @@ class AddBoletoActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         recognizer.close()
+    }
+
+    companion object {
+        const val EXTRA_ID = "boleto_id"
     }
 }

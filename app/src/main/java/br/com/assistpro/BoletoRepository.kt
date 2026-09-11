@@ -57,6 +57,26 @@ class BoletoRepository(context: Context) {
         helper.writableDatabase.update(BoletoDb.TABELA, cv, "id = ?", arrayOf(id.toString()))
     }
 
+    fun atualizar(b: Boleto) {
+        val cv = ContentValues().apply {
+            put("linha", b.linha)
+            put("valor", b.valorCentavos)
+            put("vencimento", b.vencimento)
+            put("descricao", b.descricao)
+            put("imagem", b.imagem)
+            put("pago", if (b.pago) 1 else 0)
+        }
+        helper.writableDatabase.update(BoletoDb.TABELA, cv, "id = ?", arrayOf(b.id.toString()))
+    }
+
+    fun buscar(id: Long): Boleto? {
+        helper.readableDatabase.query(
+            BoletoDb.TABELA, null, "id = ?", arrayOf(id.toString()), null, null, null
+        ).use { c ->
+            return if (c.moveToFirst()) fromCursor(c) else null
+        }
+    }
+
     fun remover(id: Long) {
         helper.writableDatabase.delete(BoletoDb.TABELA, "id = ?", arrayOf(id.toString()))
     }

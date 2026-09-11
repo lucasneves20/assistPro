@@ -47,11 +47,8 @@ class MainActivity : AppCompatActivity() {
         resumo = findViewById(R.id.resumo)
 
         adapter = BoletoListAdapter(
-            onToggle = { b ->
-                Thread { repo.atualizarPago(b.id, !b.pago) }.start()
-                b.pago = !b.pago
-                recarregar()
-            },
+            onEdit = { b -> abrirEdicao(b) },
+            onToggle = { b -> alternarPago(b) },
             onDelete = { b -> confirmarExclusao(b) }
         )
         recycler.layoutManager = LinearLayoutManager(this)
@@ -74,21 +71,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun recarregar() {
-        Thread {
-            val boletos = repo.listar()
-            for (b in boletos) BoletoNotificacoes.agendar(this, b)
-            val itens = ListItem.agrupar(boletos)
-            val emAberto = itens.filterIsInstance<ListItem.Item>()
-                .filterNot { it.boleto.pago }
-                .sumOf { it.boleto.valorCentavos }
-            runOnUiThread {
-                adapter.submit(itens)
-                val temItens = itens.isNotEmpty()
-                vazio.visibility = if (temItens) View.GONE else View.VISIBLE
-                recycler.visibility = if (temItens) View.VISIBLE else View.GONE
-                resumo.text = "Em aberto: ${Formato.moeda(emAberto)}"
-            }
-        }.start()
+        Thread { carregar() }.start()
+    }
+
+    private fun carregar() {
+        val boletos = repo.listar()
+        for (b in boletos) BoletoNotificacoes.agendar(this, b)
+        val itens = ListItem.agrupar(boletos)
+        val emAberto = itens.filterIsInstance<ListItem.Item>()
+            .filterNot { it.boleto.pago }
+            .sumOf { it.boleto.valorCentavos }
+        runOnUiThread {
+            adapter.submit(itens)
+            val temItens = itens.isNotEmpty()
+            vazio.visibility = if (temItens) View.GONE else View.VISIBLE
+            recycler.visibility = if (temItens) View.VISIBLE else View.GONE
+            resumo.text = "Em aberto: ${Formato.moeda(emAberto)}"
+        }
     }
 
     private fun pedirPermissaoNotificacoes() {
@@ -170,14 +169,29 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread { Toast.makeText(this, res, Toast.LENGTH_SHORT).show() }
     }
 
+    private fun alternarPago(b: Boleto) {
+        Thread {
+            repo.atualizarPago(b.id, !b.pago)
+            carregar()
+        }.start()
+    }
+
+    private fun abrirEdicao(b: Boleto) {
+        val i = Intent(this, AddBoletoActivity::class.java)
+        i.putExtra(AddBoletoActivity.EXTRA_ID, b.id)
+        addLauncher.launch(i)
+    }
+
     private fun confirmarExclusao(b: Boleto) {
         MaterialAlertDialogBuilder(this)
             .setTitle("Excluir boleto")
             .setMessage("Deseja remover este boleto?")
             .setNegativeButton("Cancelar", null)
             .setPositiveButton("Excluir") { _, _ ->
-                Thread { repo.remover(b.id) }.start()
-                recarregar()
+                Thread {
+                    repo.remover(b.id)
+                    carregar()
+                }.start()
             }
             .show()
     }

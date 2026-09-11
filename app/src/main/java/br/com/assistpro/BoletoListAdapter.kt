@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class BoletoListAdapter(
+    private val onEdit: (Boleto) -> Unit,
     private val onToggle: (Boleto) -> Unit,
     private val onDelete: (Boleto) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -81,6 +82,7 @@ class BoletoListAdapter(
                 pagoBtn.setImageResource(R.drawable.ic_check_off)
             }
 
+            itemView.setOnClickListener { onEdit(b) }
             pagoBtn.setOnClickListener { onToggle(b) }
             excluirBtn.setOnClickListener { onDelete(b) }
         }

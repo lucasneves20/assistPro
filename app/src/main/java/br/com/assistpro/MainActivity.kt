@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dashPerdas: TextView
     private lateinit var dashSaldo: TextView
     private lateinit var dashAberto: TextView
+    private lateinit var grafico: GraficoBarrasView
     private val repo by lazy { BoletoRepository(this) }
     private val repoGanhos by lazy { GanhoRepository(this) }
     private var apkPendente: File? = null
@@ -66,6 +67,7 @@ class MainActivity : AppCompatActivity() {
         dashPerdas = findViewById(R.id.dash_perdas)
         dashSaldo = findViewById(R.id.dash_saldo)
         dashAberto = findViewById(R.id.dash_aberto)
+        grafico = findViewById(R.id.grafico)
         carregador = Carregador(findViewById(R.id.carregando))
 
         val agora = Calendar.getInstance()
@@ -256,6 +258,7 @@ class MainActivity : AppCompatActivity() {
         dashPerdas.text = getString(R.string.dashboard_perdas, Formato.moeda(f.perdas))
         dashSaldo.text = getString(R.string.dashboard_saldo, Formato.moeda(f.saldo))
         dashAberto.text = getString(R.string.dashboard_aberto, Formato.moeda(r.emAberto))
+        grafico.definirDados(Relatorio.porDia(ganhos, boletos, anoFiltro, mesFiltro))
     }
 
     private fun perguntarGanho() {

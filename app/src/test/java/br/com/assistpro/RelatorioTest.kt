@@ -75,4 +75,19 @@ class RelatorioTest {
         assertEquals(3000L, f.perdas)
         assertEquals(5000L, f.saldo)
     }
+
+    @Test
+    fun porDiaTemTodosOsDiasComTotais() {
+        val ganhos = listOf(Ganho(data = "2025-06-05", valorCentavos = 8000))
+        val serie = Relatorio.porDia(ganhos, boletos, 2025, 6)
+        assertEquals(30, serie.size)
+
+        val dia5 = serie.first { it.dia == 5 }
+        assertEquals(8000L, dia5.ganhos)
+        assertEquals(3000L, dia5.perdas)
+
+        val dia10 = serie.first { it.dia == 10 }
+        assertEquals(1000L, dia10.perdas)
+        assertEquals(0L, dia10.ganhos)
+    }
 }

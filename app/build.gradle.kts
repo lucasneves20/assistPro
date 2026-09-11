@@ -1,4 +1,5 @@
 import java.util.Properties
+import org.gradle.api.tasks.testing.Test
 
 plugins {
     id("com.android.application")
@@ -61,6 +62,7 @@ android {
 
     testOptions {
         unitTests.isReturnDefaultValues = true
+        unitTests.isIncludeAndroidResources = true
     }
 
     kotlin {
@@ -80,4 +82,14 @@ dependencies {
     implementation("com.google.mlkit:text-recognition:16.0.1")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.json:json:20240303")
+    testImplementation("org.robolectric:robolectric:4.14.1")
+    testImplementation("androidx.test:core:1.6.1")
+}
+
+// O Robolectric nao roda no Termux (sem lib nativa do Conscrypt para aarch64).
+// Excluimos apenas os testes dele nesse ambiente; em desktop/CI eles rodam.
+tasks.withType<Test>().configureEach {
+    if (System.getenv("PREFIX")?.contains("com.termux") == true) {
+        exclude("**/CalendarioMesViewTest*")
+    }
 }

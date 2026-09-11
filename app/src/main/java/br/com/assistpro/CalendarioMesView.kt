@@ -5,8 +5,6 @@ import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.View
-import android.widget.GridLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,8 +12,9 @@ import java.util.Calendar
 
 /**
  * Calendario mensal proprio, desenhado com Views e com o tema do app.
- * Nao usa DatePicker do Android. Os dias da semana ficam na propria grade,
- * garantindo que aparecam alinhados com os numeros.
+ * Nao usa DatePicker do Android. Cada linha (semana) e um LinearLayout com
+ * 7 celulas de largura 0 + peso 1, o que funciona de forma confiavel tambem
+ * dentro de um dialogo (modal).
  */
 class CalendarioMesView @JvmOverloads constructor(
     context: Context,
@@ -30,7 +29,7 @@ class CalendarioMesView @JvmOverloads constructor(
     var aoTrocarMes: ((Int, Int) -> Unit)? = null
 
     private val titulo = TextView(context)
-    private val grade = GridLayout(context)
+    private val corpo = LinearLayout(context)
 
     private val hojeAno: Int
     private val hojeMes: Int
@@ -47,6 +46,7 @@ class CalendarioMesView @JvmOverloads constructor(
         hojeDia = cal.get(Calendar.DAY_OF_MONTH)
         ano = hojeAno
         mes = hojeMes
+        corpo.orientation = VERTICAL
         montar()
         atualizar()
     }
@@ -80,24 +80,41 @@ class CalendarioMesView @JvmOverloads constructor(
         }
         cabecalho.addView(titulo, LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1f))
         cabecalho.addView(botaoMes(">"), LinearLayout.LayoutParams(dp(44), dp(44)))
-        addView(cabecalho, LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+        addView(
+            cabecalho,
+            LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        )
 
-        grade.columnCount = 7
-        addView(grade, LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT))
+        val semana = LinearLayout(context).apply { orientation = HORIZONTAL }
+        for (nome in diasSemana) {
+            semana.addView(rotuloSemana(nome), celulaParams(dp(24)))
+        }
+        addView(
+            semana,
+            LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        )
+
+        addView(
+            corpo,
+            LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+        )
     }
 
     private fun atualizar() {
         titulo.text = Formato.mesTitulo(String.format("%04d-%02d", ano, mes))
-        grade.removeAllViews()
-        for (nome in diasSemana) {
-            grade.addView(rotuloSemana(nome), parametrosCelula(dp(26)))
-        }
+        corpo.removeAllViews()
         for (linha in CalendarioMes.celulas(ano, mes)) {
-            for (dia in linha) {
-                grade.addView(celula(dia), parametrosCelula(dp(38)))
-            }
+            val row = LinearLayout(context).apply { orientation = HORIZONTAL }
+            for (dia in linha) row.addView(celula(dia), celulaParams(dp(40)))
+            corpo.addView(
+                row,
+                LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+            )
         }
     }
+
+    private fun celulaParams(altura: Int): LinearLayout.LayoutParams =
+        LinearLayout.LayoutParams(0, altura, 1f)
 
     private fun rotuloSemana(nome: String): TextView = TextView(context).apply {
         text = nome
@@ -128,15 +145,6 @@ class CalendarioMesView @JvmOverloads constructor(
         tv.setOnClickListener { aoSelecionarDia?.invoke(dia) }
         return tv
     }
-
-    private fun parametrosCelula(altura: Int): GridLayout.LayoutParams =
-        GridLayout.LayoutParams().apply {
-            width = 0
-            height = altura
-            columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f)
-            setGravity(Gravity.CENTER)
-            setMargins(dp(1), dp(1), dp(1), dp(1))
-        }
 
     private fun botaoMes(simbolo: String): TextView = TextView(context).apply {
         text = simbolo

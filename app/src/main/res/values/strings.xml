@@ -67,4 +67,7 @@
     <string name="dashboard_perdas">Perdas: %1$s</string>
     <string name="dashboard_saldo">Saldo: %1$s</string>
     <string name="dashboard_aberto">Em aberto: %1$s</string>
+    <string name="dashboard_movimento">Movimento do mês</string>
+    <string name="legenda_ganhos">• Ganhos</string>
+    <string name="legenda_perdas">• Perdas</string>
 </resources>

@@ -73,4 +73,29 @@ object Relatorio {
         val perdas = b.sumOf { it.valorCentavos }
         return Financeiro(ganhos, perdas, ganhos - perdas, g.size)
     }
+
+    data class DiaValor(val dia: Int, val ganhos: Long, val perdas: Long)
+
+    /** Serie diaria do mes (1..ultimo dia) com ganhos e perdas por dia. */
+    fun porDia(ganhos: List<Ganho>, boletos: List<Boleto>, ano: Int, mes: Int): List<DiaValor> {
+        val dias = CalendarioMes.celulas(ano, mes).flatten().maxOrNull() ?: 0
+        if (dias <= 0) return emptyList()
+        val prefixo = String.format("%04d-%02d", ano, mes)
+        val porGanho = LongArray(dias + 1)
+        val porPerda = LongArray(dias + 1)
+        for (g in ganhos) {
+            if (g.data.length >= 10 && g.data.startsWith(prefixo)) {
+                val d = g.data.substring(8, 10).toIntOrNull() ?: 0
+                if (d in 1..dias) porGanho[d] += g.valorCentavos
+            }
+        }
+        for (b in boletos) {
+            val v = b.vencimento ?: continue
+            if (v.length >= 10 && v.startsWith(prefixo)) {
+                val d = v.substring(8, 10).toIntOrNull() ?: 0
+                if (d in 1..dias) porPerda[d] += b.valorCentavos
+            }
+        }
+        return (1..dias).map { DiaValor(it, porGanho[it], porPerda[it]) }
+    }
 }

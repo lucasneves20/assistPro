@@ -13,5 +13,7 @@ data class Checkpoint(
     var ultimoErro: String? = null,
     var app: String = "",
     var sistema: String = "",
-    var logs: String = ""
+    var logs: String = "",
+    var observacao: String = "",
+    var tipo: String = ""
 )

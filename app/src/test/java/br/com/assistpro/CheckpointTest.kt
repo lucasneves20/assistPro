@@ -19,6 +19,8 @@ class CheckpointTest {
         assertEquals("", c.app)
         assertEquals("", c.sistema)
         assertEquals("", c.logs)
+        assertEquals("", c.observacao)
+        assertEquals("", c.tipo)
         assertTrue(c.criadoEm > 0L)
     }
 }

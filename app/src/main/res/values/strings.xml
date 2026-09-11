@@ -44,4 +44,10 @@
     <string name="exportar_falhou">Falha ao exportar</string>
     <string name="limpar_checkpoints">Limpar checkpoints</string>
     <string name="checkpoints_removidos">%1$d checkpoints removidos</string>
+    <string name="checkpoint_titulo">Novo checkpoint</string>
+    <string name="checkpoint_observacao">Descreva o bug, o erro lógico ou a sua dica</string>
+    <string name="checkpoint_eh_bug">É um bug/problema</string>
+    <string name="checkpoint_feedback_desc">Desligado = dica ou feedback</string>
+    <string name="checkpoint_salvar">Salvar</string>
+    <string name="cancelar">Cancelar</string>
 </resources>

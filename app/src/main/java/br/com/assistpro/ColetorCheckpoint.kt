@@ -23,7 +23,9 @@ object ColetorCheckpoint {
         context: Context,
         tela: String,
         qtdBoletos: Int,
-        emAbertoCentavos: Long
+        emAbertoCentavos: Long,
+        observacao: String,
+        tipo: String
     ): Checkpoint {
         val versao = try {
             context.packageManager.getPackageInfo(context.packageName, 0).versionName ?: ""
@@ -38,7 +40,9 @@ object ColetorCheckpoint {
             ultimoErro = erro,
             app = appJson(ModoDev.ativo(context), qtdBoletos, emAbertoCentavos, versao),
             sistema = sistemaJson(context),
-            logs = LogApp.texto()
+            logs = LogApp.texto(),
+            observacao = observacao,
+            tipo = tipo
         )
     }
 

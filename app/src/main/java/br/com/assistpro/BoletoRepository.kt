@@ -15,12 +15,21 @@ class BoletoDb(context: Context) :
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        if (oldVersion < 2) db.execSQL(SQL_CHECKPOINTS)
+        if (oldVersion < 2) {
+            db.execSQL(SQL_CHECKPOINTS)
+        } else if (oldVersion < 3) {
+            db.execSQL(
+                "ALTER TABLE $TABELA_CHECKPOINTS ADD COLUMN observacao TEXT NOT NULL DEFAULT ''"
+            )
+            db.execSQL(
+                "ALTER TABLE $TABELA_CHECKPOINTS ADD COLUMN tipo TEXT NOT NULL DEFAULT ''"
+            )
+        }
     }
 
     companion object {
         const val NOME = "assistpro.db"
-        const val VERSAO = 2
+        const val VERSAO = 3
         const val TABELA = "boletos"
         const val TABELA_CHECKPOINTS = "checkpoints"
 
@@ -47,7 +56,9 @@ class BoletoDb(context: Context) :
                 ultimo_erro TEXT,
                 app TEXT NOT NULL DEFAULT '',
                 sistema TEXT NOT NULL DEFAULT '',
-                logs TEXT NOT NULL DEFAULT ''
+                logs TEXT NOT NULL DEFAULT '',
+                observacao TEXT NOT NULL DEFAULT '',
+                tipo TEXT NOT NULL DEFAULT ''
             )
         """.trimIndent()
     }

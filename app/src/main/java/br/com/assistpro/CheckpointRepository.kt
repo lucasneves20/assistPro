@@ -23,6 +23,8 @@ class CheckpointRepository(context: Context) {
             put("app", c.app)
             put("sistema", c.sistema)
             put("logs", c.logs)
+            put("observacao", c.observacao)
+            put("tipo", c.tipo)
         }
         return helper.writableDatabase.insert(BoletoDb.TABELA_CHECKPOINTS, null, cv)
     }
@@ -58,7 +60,9 @@ class CheckpointRepository(context: Context) {
         ultimoErro = c.getString(c.getColumnIndexOrThrow("ultimo_erro")),
         app = c.getString(c.getColumnIndexOrThrow("app")) ?: "",
         sistema = c.getString(c.getColumnIndexOrThrow("sistema")) ?: "",
-        logs = c.getString(c.getColumnIndexOrThrow("logs")) ?: ""
+        logs = c.getString(c.getColumnIndexOrThrow("logs")) ?: "",
+        observacao = c.getString(c.getColumnIndexOrThrow("observacao")) ?: "",
+        tipo = c.getString(c.getColumnIndexOrThrow("tipo")) ?: ""
     )
 
     companion object {
@@ -82,6 +86,8 @@ class CheckpointRepository(context: Context) {
                         put("app", jsonOuTexto(c.app))
                         put("sistema", jsonOuTexto(c.sistema))
                         put("logs", c.logs)
+                        put("observacao", c.observacao)
+                        put("tipo", c.tipo)
                     }
                 )
             }

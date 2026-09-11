@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.AssistPro" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/dracula_purple</item>
+        <item name="colorOnPrimary">@color/dracula_bg</item>
+        <item name="colorPrimaryContainer">@color/dracula_current</item>
+        <item name="colorOnPrimaryContainer">@color/dracula_fg</item>
+        <item name="colorSecondary">@color/dracula_pink</item>
+        <item name="colorOnSecondary">@color/dracula_bg</item>
+        <item name="colorTertiary">@color/dracula_cyan</item>
+        <item name="android:colorBackground">@color/dracula_bg</item>
+        <item name="colorSurface">@color/dracula_current</item>
+        <item name="colorOnSurface">@color/dracula_fg</item>
+        <item name="colorSurfaceVariant">@color/dracula_current</item>
+        <item name="colorOnSurfaceVariant">@color/dracula_comment</item>
+        <item name="colorOutline">@color/dracula_comment</item>
+        <item name="colorError">@color/dracula_red</item>
+        <item name="android:statusBarColor">@color/dracula_bg</item>
+        <item name="android:navigationBarColor">@color/dracula_bg</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:textColorPrimary">@color/dracula_fg</item>
+        <item name="android:textColorSecondary">@color/dracula_comment</item>
+    </style>
+
+    <style name="CampoTexto">
+        <item name="android:background">@drawable/bg_input</item>
+        <item name="android:textColor">@color/dracula_fg</item>
+        <item name="android:textColorHint">@color/dracula_comment</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:padding">14dp</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+</resources>

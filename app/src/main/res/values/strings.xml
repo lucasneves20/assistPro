@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">assistPro</string>
+    <string name="subtitulo">Seus boletos organizados por mês</string>
+    <string name="vazio">Nenhum boleto por aqui.\nToque no + para adicionar, lendo pela câmera, galeria ou digitando.</string>
+    <string name="adicionar">Adicionar boleto</string>
+    <string name="tirar_foto">Foto</string>
+    <string name="galeria">Galeria</string>
+    <string name="arquivos">Arquivos</string>
+    <string name="salvar">Salvar boleto</string>
+    <string name="descricao">Descrição (ex.: Internet, Condomínio)</string>
+    <string name="linha_digitavel">Linha digitável</string>
+    <string name="valor">Valor</string>
+    <string name="vencimento">Vencimento</string>
+    <string name="sem_arquivos">Nenhuma imagem ou PDF nesta pasta.</string>
+    <string name="boleto">Boleto</string>
+    <string name="notificacao_canal">Vencimentos</string>
+    <string name="notificacao_canal_desc">Avisos de boletos próximos do vencimento</string>
+    <string name="notificacao_titulo">%1$s vence em breve</string>
+    <string name="notificacao_texto">Vence em %1$s  •  %2$s</string>
+    <string name="atualizar">Verificar atualizações</string>
+    <string name="atualizacao_verificando">Verificando atualizações…</string>
+    <string name="atualizacao_atual">Você já está na versão mais recente.</string>
+    <string name="atualizacao_falha">Não foi possível verificar atualizações.</string>
+    <string name="atualizacao_titulo">Nova versão %1$s disponível</string>
+    <string name="atualizacao_notas">Uma nova versão está disponível. Deseja baixar e instalar?</string>
+    <string name="atualizacao_baixando">Baixando atualização…</string>
+    <string name="atualizacao_erro_download">Falha ao baixar a atualização.</string>
+    <string name="atualizacao_instalar">Atualizar</string>
+    <string name="atualizacao_depois">Depois</string>
+</resources>

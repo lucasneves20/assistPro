@@ -50,4 +50,7 @@
     <string name="checkpoint_feedback_desc">Desligado = dica ou feedback</string>
     <string name="checkpoint_salvar">Salvar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="relatorios">Relatórios</string>
+    <string name="relatorio_vazio">Nenhum boleto neste período</string>
+    <string name="aguardando_boleto">Aguardando boleto…</string>
 </resources>

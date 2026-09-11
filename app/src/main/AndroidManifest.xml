@@ -50,6 +50,11 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
 
+        <activity
+            android:name=".RelatoriosActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+
         <receiver
             android:name=".BoletoAlarmeReceiver"
             android:exported="false" />

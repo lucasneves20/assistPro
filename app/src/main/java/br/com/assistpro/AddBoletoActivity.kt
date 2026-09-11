@@ -9,6 +9,9 @@ import android.graphics.pdf.PdfRenderer
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.view.View
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
@@ -36,6 +39,7 @@ class AddBoletoActivity : AppCompatActivity() {
     private lateinit var status: TextView
     private lateinit var titulo: TextView
     private lateinit var carregador: Carregador
+    private lateinit var previewDica: TextView
 
     private var boletoId: Long = 0L
     private var boletoAtual: Boleto? = null
@@ -65,6 +69,8 @@ class AddBoletoActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add)
 
         preview = findViewById(R.id.preview)
+        previewDica = findViewById(R.id.preview_dica)
+        animarDica()
         campoDescricao = findViewById(R.id.campo_descricao)
         campoLinha = findViewById(R.id.campo_linha)
         campoValor = findViewById(R.id.campo_valor)
@@ -104,6 +110,21 @@ class AddBoletoActivity : AppCompatActivity() {
     private fun rotuloTela(): String =
         if (boletoId > 0) "Editar boleto" else "Adicionar boleto"
 
+    private fun animarDica() {
+        val anim = AlphaAnimation(0.25f, 1f).apply {
+            duration = 900
+            repeatMode = Animation.REVERSE
+            repeatCount = Animation.INFINITE
+        }
+        previewDica.startAnimation(anim)
+    }
+
+    private fun mostrarPreview(bmp: Bitmap) {
+        preview.setImageBitmap(bmp)
+        previewDica.clearAnimation()
+        previewDica.visibility = View.GONE
+    }
+
     private fun tirarFoto() {
         val dir = File(cacheDir, "capturas")
         if (!dir.exists()) dir.mkdirs()
@@ -121,7 +142,7 @@ class AddBoletoActivity : AppCompatActivity() {
             return
         }
         bitmap = bmp
-        preview.setImageBitmap(bmp)
+        mostrarPreview(bmp)
         rodarOcr(bmp)
     }
 
@@ -138,7 +159,7 @@ class AddBoletoActivity : AppCompatActivity() {
             return
         }
         bitmap = bmp
-        preview.setImageBitmap(bmp)
+        mostrarPreview(bmp)
         rodarOcr(bmp)
     }
 
@@ -284,7 +305,7 @@ class AddBoletoActivity : AppCompatActivity() {
                     campoLinha.setText(b.linha)
                     if (b.valorCentavos > 0) campoValor.setText(Formato.moeda(b.valorCentavos))
                     b.vencimento?.let { campoVencimento.setText(Formato.dataBrDeIso(it)) }
-                    if (bmp != null) preview.setImageBitmap(bmp)
+                    if (bmp != null) mostrarPreview(bmp)
                 }
                 carregador.finalizar()
             }

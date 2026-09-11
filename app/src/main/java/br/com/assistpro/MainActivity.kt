@@ -65,6 +65,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ConfiguracoesActivity::class.java))
         }
 
+        findViewById<ImageButton>(R.id.btn_relatorio).setOnClickListener {
+            startActivity(Intent(this, RelatoriosActivity::class.java))
+        }
+
         findViewById<ImageButton>(R.id.btn_atualizar).setOnClickListener {
             verificarAtualizacao(manual = true)
         }

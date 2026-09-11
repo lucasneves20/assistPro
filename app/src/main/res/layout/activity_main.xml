@@ -27,6 +27,17 @@
         android:src="@drawable/ic_bug"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@id/titulo"
+        app:layout_constraintEnd_toStartOf="@id/btn_relatorio"
+        app:layout_constraintTop_toTopOf="@id/titulo" />
+
+    <ImageButton
+        android:id="@+id/btn_relatorio"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/relatorios"
+        android:src="@drawable/ic_relatorio"
+        app:layout_constraintBottom_toBottomOf="@id/titulo"
         app:layout_constraintEnd_toStartOf="@id/btn_config"
         app:layout_constraintTop_toTopOf="@id/titulo" />
 

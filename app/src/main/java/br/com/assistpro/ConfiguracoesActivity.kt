@@ -5,6 +5,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.materialswitch.MaterialSwitch
 
 class ConfiguracoesActivity : AppCompatActivity() {
@@ -53,6 +54,26 @@ class ConfiguracoesActivity : AppCompatActivity() {
                     ).show()
                 }
             }.start()
+        }
+
+        findViewById<Button>(R.id.btn_dados_exemplo).setOnClickListener {
+            MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.dados_exemplo)
+                .setMessage(R.string.dados_exemplo_confirmar)
+                .setNegativeButton(R.string.cancelar, null)
+                .setPositiveButton(R.string.checkpoint_salvar) { _, _ ->
+                    Thread {
+                        val total = DadosExemplo.gerar(this)
+                        runOnUiThread {
+                            Toast.makeText(
+                                this,
+                                getString(R.string.dados_exemplo_ok, total),
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                    }.start()
+                }
+                .show()
         }
     }
 

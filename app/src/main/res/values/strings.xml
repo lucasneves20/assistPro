@@ -70,4 +70,7 @@
     <string name="dashboard_movimento">Movimento do mês</string>
     <string name="legenda_ganhos">• Ganhos</string>
     <string name="legenda_perdas">• Perdas</string>
+    <string name="dados_exemplo">Gerar dados de exemplo</string>
+    <string name="dados_exemplo_confirmar">Criar boletos e ganhos fictícios para visualizar o dashboard?</string>
+    <string name="dados_exemplo_ok">%1$d registros de exemplo criados</string>
 </resources>

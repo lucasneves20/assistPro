@@ -24,8 +24,10 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recycler: RecyclerView
     private lateinit var vazio: View
     private lateinit var resumo: TextView
+    private lateinit var carregador: Carregador
     private val repo by lazy { BoletoRepository(this) }
     private var apkPendente: File? = null
+    private var primeiraCarga = true
 
     private val addLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -45,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         recycler = findViewById(R.id.lista)
         vazio = findViewById(R.id.vazio)
         resumo = findViewById(R.id.resumo)
+        carregador = Carregador(findViewById(R.id.carregando))
 
         adapter = BoletoListAdapter(
             onEdit = { b -> abrirEdicao(b) },
@@ -71,6 +74,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun recarregar() {
+        carregador.iniciar(if (primeiraCarga) 0L else 1000L)
         Thread { carregar() }.start()
     }
 
@@ -87,6 +91,8 @@ class MainActivity : AppCompatActivity() {
             vazio.visibility = if (temItens) View.GONE else View.VISIBLE
             recycler.visibility = if (temItens) View.VISIBLE else View.GONE
             resumo.text = "Em aberto: ${Formato.moeda(emAberto)}"
+            carregador.finalizar()
+            primeiraCarga = false
         }
     }
 

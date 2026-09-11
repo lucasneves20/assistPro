@@ -9,6 +9,7 @@
     <string name="arquivos">Arquivos</string>
     <string name="salvar">Salvar boleto</string>
     <string name="editar">Editar boleto</string>
+    <string name="carregando">Carregando…</string>
     <string name="descricao">Descrição (ex.: Internet, Condomínio)</string>
     <string name="linha_digitavel">Linha digitável</string>
     <string name="valor">Valor</string>

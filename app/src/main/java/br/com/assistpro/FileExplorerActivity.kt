@@ -24,6 +24,7 @@ class FileExplorerActivity : AppCompatActivity() {
     private lateinit var adapter: FileAdapter
     private lateinit var caminhoView: TextView
     private lateinit var vazio: TextView
+    private lateinit var carregador: Carregador
     private var atual: File = Environment.getExternalStorageDirectory()
 
     private val pedirTudo = registerForActivityResult(
@@ -36,6 +37,7 @@ class FileExplorerActivity : AppCompatActivity() {
 
         caminhoView = findViewById(R.id.caminho)
         vazio = findViewById(R.id.vazio)
+        carregador = Carregador(findViewById(R.id.carregando))
         val recycler = findViewById<RecyclerView>(R.id.lista)
 
         adapter = FileAdapter { entry -> abrir(entry) }
@@ -114,13 +116,21 @@ class FileExplorerActivity : AppCompatActivity() {
 
     private fun listar(dir: File) {
         caminhoView.text = dir.absolutePath
-        val arquivos = dir.listFiles()
-        val entradas = (arquivos ?: emptyArray())
-            .filter { !it.name.startsWith(".") && FileAdapter.imagemOuPdf(it) }
-            .sortedWith(compareByDescending<File> { it.isDirectory }.thenBy { it.name.lowercase() })
-            .map { FileEntry(it, it.isDirectory) }
-        adapter.submit(entradas)
-        vazio.visibility = if (entradas.isEmpty()) View.VISIBLE else View.GONE
+        carregador.iniciar()
+        Thread {
+            val entradas = (dir.listFiles() ?: emptyArray())
+                .filter { !it.name.startsWith(".") && FileAdapter.imagemOuPdf(it) }
+                .sortedWith(
+                    compareByDescending<File> { it.isDirectory }
+                        .thenBy { it.name.lowercase() }
+                )
+                .map { FileEntry(it, it.isDirectory) }
+            runOnUiThread {
+                adapter.submit(entradas)
+                vazio.visibility = if (entradas.isEmpty()) View.VISIBLE else View.GONE
+                carregador.finalizar()
+            }
+        }.start()
     }
 
     companion object {

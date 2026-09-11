@@ -35,6 +35,7 @@ class AddBoletoActivity : AppCompatActivity() {
     private lateinit var campoVencimento: EditText
     private lateinit var status: TextView
     private lateinit var titulo: TextView
+    private lateinit var carregador: Carregador
 
     private var boletoId: Long = 0L
     private var boletoAtual: Boleto? = null
@@ -71,6 +72,9 @@ class AddBoletoActivity : AppCompatActivity() {
         status = findViewById(R.id.status)
         titulo = findViewById(R.id.titulo_add)
 
+        carregador = Carregador(findViewById(R.id.carregando))
+        carregador.iniciar()
+
         boletoId = intent.getLongExtra(EXTRA_ID, 0L)
         if (boletoId > 0) {
             titulo.setText(R.string.editar)
@@ -86,6 +90,8 @@ class AddBoletoActivity : AppCompatActivity() {
 
         campoVencimento.setOnClickListener { escolherData() }
         campoVencimento.isFocusable = false
+
+        if (boletoId <= 0) carregador.finalizar()
     }
 
     private fun tirarFoto() {
@@ -256,18 +262,21 @@ class AddBoletoActivity : AppCompatActivity() {
     private fun carregarBoleto() {
         if (boletoId <= 0) return
         Thread {
-            val b = repo.buscar(boletoId) ?: return@Thread
-            val bmp = b.imagem?.let { caminho ->
+            val b = repo.buscar(boletoId)
+            val bmp = b?.imagem?.let { caminho ->
                 val arquivo = File(caminho)
                 if (arquivo.exists()) BitmapFactory.decodeFile(arquivo.absolutePath) else null
             }
             runOnUiThread {
-                boletoAtual = b
-                campoDescricao.setText(b.descricao)
-                campoLinha.setText(b.linha)
-                if (b.valorCentavos > 0) campoValor.setText(Formato.moeda(b.valorCentavos))
-                b.vencimento?.let { campoVencimento.setText(Formato.dataBrDeIso(it)) }
-                if (bmp != null) preview.setImageBitmap(bmp)
+                if (b != null) {
+                    boletoAtual = b
+                    campoDescricao.setText(b.descricao)
+                    campoLinha.setText(b.linha)
+                    if (b.valorCentavos > 0) campoValor.setText(Formato.moeda(b.valorCentavos))
+                    b.vencimento?.let { campoVencimento.setText(Formato.dataBrDeIso(it)) }
+                    if (bmp != null) preview.setImageBitmap(bmp)
+                }
+                carregador.finalizar()
             }
         }.start()
     }
